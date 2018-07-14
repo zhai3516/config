@@ -10,7 +10,7 @@ set incsearch "在输入要搜索的文字时，vim会实时匹配
 set backspace=indent,eol,start whichwrap+=<,>,[,] "允许退格键的使用
 set wildmenu "命令行函数自动补全
 set nocompatible
-set guifont=Bitstream_Vera_Sans_Mono:h9:cANSI "记住空格用下划线代替哦
+set guifont=Bitstream_Vera_Sans_Mono:h9:cANSI "记住空格用下划线代替
 set gfw=幼圆:h10:cGB2312
 set foldmethod=indent
 set foldlevel=4
@@ -125,4 +125,5 @@ au BufRead,BufNewFile *.avdl setlocal filetype=avro-idl
 " ------------------------- Pyflake Settings ----------------------------
 " Install pyflake by `https://github.com/kevinw/pyflakes-vim`
 " plugin : pyflasks {'0': close quick fix, '1':open quick fix} , default 1
-let g:pyflakes_use_quickfix = 0
+" Use `https://github.com/w0rp/ale#installation-with-vundle`  instead
+"let g:pyflakes_use_quickfix = 0
