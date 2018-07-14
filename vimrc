@@ -10,7 +10,7 @@ set incsearch "在输入要搜索的文字时，vim会实时匹配
 set backspace=indent,eol,start whichwrap+=<,>,[,] "允许退格键的使用
 set wildmenu "命令行函数自动补全
 set nocompatible
-set guifont=Bitstream_Vera_Sans_Mono:h9:cANSI "记住空格用下划线代替
+set guifont=Bitstream_Vera_Sans_Mono:h9:cANSI "记住空格用下划线代替哦
 set gfw=幼圆:h10:cGB2312
 set foldmethod=indent
 set foldlevel=4
@@ -41,6 +41,17 @@ match OverLength /\%81v.\+/
 "  jk 按键代替 esc
 inoremap jk <esc>
 
+" Fold/unfold code
+nnoremap <space> za
+vnoremap <space> zf
+
+" Avro 语法高亮, 需要安装 https://github.com/dln/avro-vim
+" au BufRead,BufNewFile *.avdl setlocal filetype=avro-idl
+
+" Install pyflake by `https://github.com/kevinw/pyflakes-vim`
+" plugin : pyflasks {'0': close quick fix, '1':open quick fix} , default 1
+" let g:pyflakes_use_quickfix = 0
+
 " ------------------------- Vundle Plugins ----------------------------
 " Before to do: 
 " `git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
@@ -54,12 +65,35 @@ Plugin 'gmarik/Vundle.vim'
 " Should make after install `./install.sh --clang-completer`
 Plugin 'Valloric/YouCompleteMe'
 
+" syntastic-check
+" Should `python -m pip install flake8`
+Plugin 'vim-syntastic/syntastic'
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_python_checkers=['flake8']
+let g:syntastic_python_flake8_post_args='--ignore=E501'
+let g:syntastic_python_flake8_args='--ignore=E501'
+" let g:syntastic_debug = 1 " only for debug
+
 " Python go to definetion
 Plugin 'davidhalter/jedi-vim'
+" 禁用 jedi-vim 的自动补全
+let g:jedi#completions_enabled = 0
 
 " Python code auto format. Dependency: `pip install autopep8`
 Plugin 'tell-k/vim-autopep8'
+" auto pep8 ignore E501
+let g:autopep8_ignore="E501"
+"" 自动格式化代码快捷键 F3
+autocmd FileType python noremap <buffer> <F3> :call Autopep8()<CR> " For vim-autoformat
+
 " Plugin 'Chiel92/vim-autoformat'
+" map <F3> :Autoformat<CR> " For vim-autopep8
 
 " Golang go to definetion
 Plugin 'fatih/vim-go'
@@ -69,9 +103,21 @@ Plugin 'elzr/vim-json'
 
 " Nerdtree - A file tree explorer plugin
 Plugin 'scrooloose/nerdtree'
+"" nerdtree快捷键 F1
+map <F1> :NERDTreeMirror<CR>
+map <F1> :NERDTreeToggle<CR>
+" 自动打开 nerdtree
+autocmd vimenter * NERDTree
+" 关闭文件自动退出 nerdtree
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " Show tag bar for files
 Plugin 'majutsushi/tagbar'
+"" tagbar快捷键 F2
+map <F2> :TagbarToggle<CR>
+" tagbar 需要安装 Ctags `https://github.com/majutsushi/tagbar/issues/365`
+" brew install ctags-exuberant
+let g:Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
 
 " Thrift plugin
 Plugin 'solarnz/thrift.vim'
@@ -81,49 +127,9 @@ Plugin 'ervandew/supertab'
 
 " solarized vim
 Plugin 'altercation/vim-colors-solarized'
-call vundle#end()
-
-" ------------------------- Vundle Settings ----------------------------
-"" nerdtree快捷键 F1
-map <F1> :NERDTreeMirror<CR>
-map <F1> :NERDTreeToggle<CR>
-
-"" tagbar快捷键 F2
-map <F2> :TagbarToggle<CR>
-
-"" 自动格式化代码快捷键 F3
-autocmd FileType python noremap <buffer> <F3> :call Autopep8()<CR> " For vim-autoformat
-" map <F3> :Autoformat<CR> " For vim-autopep8
-
-" Fold/unfold code
-nnoremap <space> za
-vnoremap <space> zf
-
-" auto pep8 ignore E501
-let g:autopep8_ignore="E501"
-
-" 禁用 jedi-vim 的自动补全
-let g:jedi#completions_enabled = 0
-
-" 自动打开 nerdtree
-autocmd vimenter * NERDTree
-" 关闭文件自动退出 nerdtree
-"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-" tagbar 需要安装 Ctags `https://github.com/majutsushi/tagbar/issues/365`
-" brew install ctags-exuberant
-let g:Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
-
 " vim solarized dark 配色
 syntax enable
 set background=dark
 colorscheme solarized
 
-" Avro 语法高亮, 需要安装 https://github.com/dln/avro-vim
-au BufRead,BufNewFile *.avdl setlocal filetype=avro-idl
-
-" ------------------------- Pyflake Settings ----------------------------
-" Install pyflake by `https://github.com/kevinw/pyflakes-vim`
-" plugin : pyflasks {'0': close quick fix, '1':open quick fix} , default 1
-" Use `https://github.com/w0rp/ale#installation-with-vundle`  instead
-"let g:pyflakes_use_quickfix = 0
+call vundle#end()
