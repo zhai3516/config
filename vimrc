@@ -128,6 +128,8 @@ Plugin 'ervandew/supertab'
 " solarized vim
 Plugin 'altercation/vim-colors-solarized'
 " vim solarized dark 配色
+"   $ cd vim-colors-solarized/colors
+"   $ mv solarized.vim ~/.vim/colors/
 syntax enable
 set background=dark
 colorscheme solarized
