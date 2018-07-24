@@ -45,9 +45,6 @@ inoremap jk <esc>
 nnoremap <space> za
 vnoremap <space> zf
 
-" Avro 语法高亮, 需要安装 https://github.com/dln/avro-vim
-" au BufRead,BufNewFile *.avdl setlocal filetype=avro-idl
-
 " Install pyflake by `https://github.com/kevinw/pyflakes-vim`
 " plugin : pyflasks {'0': close quick fix, '1':open quick fix} , default 1
 " let g:pyflakes_use_quickfix = 0
@@ -61,9 +58,11 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
+
 " Python, c++, go auto command 
 " Should make after install `./install.sh --clang-completer`
 Plugin 'Valloric/YouCompleteMe'
+
 
 " syntastic-check
 " Should `python -m pip install flake8`
@@ -73,17 +72,19 @@ set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_python_checkers=['flake8']
 let g:syntastic_python_flake8_post_args='--ignore=E501'
 let g:syntastic_python_flake8_args='--ignore=E501'
 " let g:syntastic_debug = 1 " only for debug
 
+
 " Python go to definetion
 Plugin 'davidhalter/jedi-vim'
 " 禁用 jedi-vim 的自动补全
 let g:jedi#completions_enabled = 0
+
 
 " Python code auto format. Dependency: `pip install autopep8`
 Plugin 'tell-k/vim-autopep8'
@@ -92,14 +93,18 @@ let g:autopep8_ignore="E501"
 "" 自动格式化代码快捷键 F3
 autocmd FileType python noremap <buffer> <F3> :call Autopep8()<CR> " For vim-autoformat
 
+
 " Plugin 'Chiel92/vim-autoformat'
 " map <F3> :Autoformat<CR> " For vim-autopep8
+
 
 " Golang go to definetion
 Plugin 'fatih/vim-go'
 
+
 " Json format/syntax tool
 Plugin 'elzr/vim-json'
+
 
 " Nerdtree - A file tree explorer plugin
 Plugin 'scrooloose/nerdtree'
@@ -111,6 +116,7 @@ autocmd vimenter * NERDTree
 " 关闭文件自动退出 nerdtree
 "autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+
 " Show tag bar for files
 Plugin 'majutsushi/tagbar'
 "" tagbar快捷键 F2
@@ -119,11 +125,28 @@ map <F2> :TagbarToggle<CR>
 " brew install ctags-exuberant
 let g:Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
 
+
+" Nginx-conf plugin
+Plugin 'chr4/nginx.vim'
+" 针对所有 .avdl 文件，设定filetype 为 avro-idl，avro 语法高亮生效
+au BufRead,BufNewFile *.conf setlocal filetype=nginx
+
+
 " Thrift plugin
 Plugin 'solarnz/thrift.vim'
+" 针对所有 .thrift 文件，设定filetype 为 thrift，Thrift 语法高亮生效
+au BufRead,BufNewFile *.thrift setlocal filetype=thrift
+
+
+" Avro plugin
+Plugin 'dln/avro-vim'
+" 针对所有 .avdl 文件，设定filetype 为 avro-idl，avro 语法高亮生效
+au BufRead,BufNewFile *.avdl setlocal filetype=avro-idl
+
 
 " Vim auto_completion with `tab`
 Plugin 'ervandew/supertab'
+
 
 " solarized vim
 Plugin 'altercation/vim-colors-solarized'
@@ -133,5 +156,6 @@ Plugin 'altercation/vim-colors-solarized'
 syntax enable
 set background=dark
 colorscheme solarized
+
 
 call vundle#end()
